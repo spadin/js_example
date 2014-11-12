@@ -1,0 +1,24 @@
+$border-color: lightgray;
+
+body {
+  font-size: 16px;
+}
+
+form {
+  border: 1px solid $border-color;
+  padding: 5px;
+  margin: 5px;
+  margin-top: 40px;
+  width: 400px;
+
+  legend {
+    border: 1px solid $border-color;
+    background-color: white;
+    padding: 0 5px;
+    margin: -16px 0 5px 0;
+  }
+
+  input[type="text"][disabled] {
+    color: darkgray;
+  }
+}

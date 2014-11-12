@@ -1,0 +1,41 @@
+<form name="shipping">
+  <legend>Shipping form</legend>
+  <input type="text" name="zipcode" value="60607" data-id="shipping-zipcode">
+</form>
+
+<form name="billing">
+  <legend>Billing form</legend>
+
+  <label for="zipcode-label">Same as shipping</label>
+  <input type="checkbox" id="zipcode-label" checked="checked" data-id="billing-should-use-shipping-zipcode">
+
+  <input type="text" name="zipcode" data-id="billing-zipcode">
+</form>
+
+<script type="application/javascript">
+(function() {
+  "use strict";
+
+  var $sourceInput = $("[data-id='shipping-zipcode']"),
+      $targetInput = $("[data-id='billing-zipcode']"),
+      $checkbox    = $("[data-id='billing-should-use-shipping-zipcode']");
+
+  new NS.ToggleInputFromCheckbox({
+    input: $targetInput,
+    checkbox: $checkbox
+  }).bindEvents();
+
+  new NS.SyncInputFields({
+    sourceInput: $sourceInput,
+    targetInput: $targetInput,
+    watchedElements: [$checkbox],
+    conditionFn: function(watchedElements) {
+      var checkbox = watchedElements[0];
+      return checkbox.prop('checked');
+    },
+    formatterFn: function(value) {
+      return value.substring(0, 5);
+    }
+  }).bindEvents();
+})();
+</script>

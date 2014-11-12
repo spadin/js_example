@@ -1,0 +1,14 @@
+src_dir: "app/assets/javascripts"
+
+src_files:
+ - "application.{js.coffee,js,coffee}"
+
+spec_dir: spec/javascripts
+
+helpers:
+  - "helpers/**/*.{js.coffee,js,coffee}"
+
+spec_files:
+  - "**/*[Ss]pec.{js.coffee,js,coffee}"
+
+tmp_dir: "tmp/jasmine"
