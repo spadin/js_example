@@ -20,7 +20,7 @@
       $targetInput = $("[data-id='billing-zipcode']"),
       $checkbox    = $("[data-id='billing-should-use-shipping-zipcode']");
 
-  var syncer, toggler;
+  var syncer, toggler, mapper;
 
   toggler = new NS.ToggleInputBasedOnCheckbox({
     input: $targetInput,
@@ -38,36 +38,14 @@
     }
   });
 
-  new NS.BindEventOnElementToCommand({
-    element: $checkbox,
-    event: "change",
-    command: function() {
-      toggler.execute();
-    }
-  }).execute();
+  var mapper = new NS.EventMapper();
 
-  new NS.BindEventOnElementToCommand({
-    element: $sourceInput,
-    event: "change",
-    command: function() {
-      syncer.execute();
-    }
-  }).execute();
+  mapper.addMany([
+   ["change", $checkbox, toggler],
+   ["change", $sourceInput, syncer],
+   ["change", $checkbox, syncer],
+   ["keyup", $sourceInput, syncer]
+  ]);
 
-  new NS.BindEventOnElementToCommand({
-    element: $checkbox,
-    event: "change",
-    command: function() {
-      syncer.execute();
-    }
-  }).execute();
-
-  new NS.BindEventOnElementToCommand({
-    element: $sourceInput,
-    event: "keyup",
-    command: function() {
-      syncer.execute();
-    }
-  }).execute();
 })();
 </script>
