@@ -20,22 +20,54 @@
       $targetInput = $("[data-id='billing-zipcode']"),
       $checkbox    = $("[data-id='billing-should-use-shipping-zipcode']");
 
-  new NS.ToggleInputFromCheckbox({
+  var syncer, toggler;
+
+  toggler = new NS.ToggleInputBasedOnCheckbox({
     input: $targetInput,
     checkbox: $checkbox
-  }).bindEvents();
+  });
 
-  new NS.SyncInputFields({
+  syncer = new NS.SyncInputFields({
     sourceInput: $sourceInput,
     targetInput: $targetInput,
-    watchedElements: [$checkbox],
-    conditionFn: function(watchedElements) {
-      var checkbox = watchedElements[0];
-      return checkbox.prop('checked');
+    conditionFn: function() {
+      return $checkbox.prop('checked');
     },
     formatterFn: function(value) {
       return value.substring(0, 5);
     }
-  }).bindEvents();
+  });
+
+  new NS.BindEventOnElementToCommand({
+    element: $checkbox,
+    event: "change",
+    command: function() {
+      toggler.execute();
+    }
+  }).execute();
+
+  new NS.BindEventOnElementToCommand({
+    element: $sourceInput,
+    event: "change",
+    command: function() {
+      syncer.execute();
+    }
+  }).execute();
+
+  new NS.BindEventOnElementToCommand({
+    element: $checkbox,
+    event: "change",
+    command: function() {
+      syncer.execute();
+    }
+  }).execute();
+
+  new NS.BindEventOnElementToCommand({
+    element: $sourceInput,
+    event: "keyup",
+    command: function() {
+      syncer.execute();
+    }
+  }).execute();
 })();
 </script>

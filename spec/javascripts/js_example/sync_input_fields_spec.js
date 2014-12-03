@@ -25,14 +25,11 @@ describe("NS.SyncInputFields", function() {
       targetInput: targetInput
     });
 
-    syncer.bindEvents();
-
     sourceInput.val("hello");
-    sourceInput.trigger("change");
+
+    syncer.execute();
 
     expect(targetInput.val()).toEqual("hello");
-
-    syncer.unbindEvents();
   });
 
   it("syncs the targetInput to sourceInput if conditionFn returns true", function() {
@@ -42,14 +39,11 @@ describe("NS.SyncInputFields", function() {
       conditionFn: function() { return true; }
     });
 
-    syncer.bindEvents();
-
     sourceInput.val("hello");
-    sourceInput.trigger("change");
+
+    syncer.execute();
 
     expect(targetInput.val()).toEqual("hello");
-
-    syncer.unbindEvents();
   });
 
   it("does not sync the targetInput to sourceInput if conditionFn returns false", function() {
@@ -59,60 +53,11 @@ describe("NS.SyncInputFields", function() {
       conditionFn: function() { return false; }
     });
 
-    syncer.bindEvents();
-
     sourceInput.val("hello");
-    sourceInput.trigger("change");
+
+    syncer.execute();
 
     expect(targetInput.val()).toEqual("targetInput");
-
-    syncer.unbindEvents();
-  });
-
-  it("syncs the targetInput to sourceInput when a watched element changes", function() {
-    var checkbox, syncer;
-
-    checkbox = $("<input type='checkbox'>");
-    syncer = new NS.SyncInputFields({
-      sourceInput: sourceInput,
-      targetInput: targetInput,
-      watchedElements: [checkbox]
-    });
-
-    syncer.bindEvents();
-
-    sourceInput.val("hello");
-    checkbox.trigger("change");
-
-    expect(targetInput.val()).toEqual("hello");
-
-    syncer.unbindEvents();
-  });
-
-  it("passes watchedElements to conditionFn", function() {
-    var checkbox, syncer;
-
-    checkbox = $("<input type='checkbox'>");
-    syncer = new NS.SyncInputFields({
-      sourceInput: sourceInput,
-      targetInput: targetInput,
-      watchedElements: [checkbox],
-      conditionFn: function(watchedElements) { return watchedElements[0].prop('checked'); }
-    });
-
-    syncer.bindEvents();
-
-    sourceInput.val("hello");
-    sourceInput.trigger("change");
-
-    expect(targetInput.val()).toEqual("targetInput");
-
-    checkbox.prop('checked', true);
-    checkbox.trigger("change");
-
-    expect(targetInput.val()).toEqual("hello");
-
-    syncer.unbindEvents();
   });
 
   it("formats the source input value when syncing to the target input", function() {
@@ -125,14 +70,11 @@ describe("NS.SyncInputFields", function() {
       formatterFn: formatterFn
     });
 
-    syncer.bindEvents();
-
     sourceInput.val("hello");
-    sourceInput.trigger("change");
+
+    syncer.execute();
 
     expect(targetInput.val()).toEqual("hello!");
-
-    syncer.unbindEvents();
   });
 
 });

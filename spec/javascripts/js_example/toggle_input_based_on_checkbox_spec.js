@@ -1,7 +1,7 @@
-//= require js_example/toggle_input_from_checkbox
+//= require js_example/toggle_input_based_on_checkbox
 //= require jasmine-jquery
 
-describe("NS.ToggleInputFromCheckbox", function() {
+describe("NS.ToggleInputBasedOnCheckbox", function() {
   var input, checkbox, toggler;
 
   beforeEach(function() {
@@ -12,7 +12,7 @@ describe("NS.ToggleInputFromCheckbox", function() {
   it("disables the input if the checkbox is checked upon instantiation", function() {
     checkbox.prop("checked", true);
 
-    new NS.ToggleInputFromCheckbox({
+    new NS.ToggleInputBasedOnCheckbox({
       input: input,
       checkbox: checkbox
     });
@@ -22,38 +22,31 @@ describe("NS.ToggleInputFromCheckbox", function() {
 
   describe("after binding to events", function() {
     it("disables the input if the checkbox is checked", function() {
-      toggler = new NS.ToggleInputFromCheckbox({
+      toggler = new NS.ToggleInputBasedOnCheckbox({
         input: input,
         checkbox: checkbox
       });
 
-      toggler.bindEvents();
-
       checkbox.prop("checked", true);
-      checkbox.trigger("change");
+
+      toggler.execute();
 
       expect(input).toBeDisabled();
-
-      toggler.unbindEvents();
     });
 
     it("enables the input if the checkbox is unchecked", function() {
-      toggler = new NS.ToggleInputFromCheckbox({
+      toggler = new NS.ToggleInputBasedOnCheckbox({
         input: input,
         checkbox: checkbox
       });
 
-      toggler.bindEvents();
-
       checkbox.prop("checked", true);
-      checkbox.trigger("change");
+      toggler.execute();
 
       checkbox.prop("checked", false);
-      checkbox.trigger("change");
+      toggler.execute();
 
       expect(input).not.toBeDisabled();
-
-      toggler.unbindEvents();
     });
   });
 });

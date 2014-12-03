@@ -11,27 +11,15 @@
   }
 
   SyncInputFields.prototype = {
-    bindEvents: function() {
-      _(this.elements).each(function(elem) {
-        elem.on("change", _.bind(this._syncInput, this));
-      }, this);
-    },
-
-    unbindEvents: function() {
-      _(this.elements).each(function(elem) {
-        elem.off("change");
-      });
+    execute: function() {
+      if(this.conditionFn(this.watchedElements)) {
+        this.targetInput.val(this.formatterFn(this.sourceInput.val()));
+      }
     },
 
     _init: function() {
       this._setElements();
-      this._syncInput();
-    },
-
-    _syncInput: function() {
-      if(this.conditionFn(this.watchedElements)) {
-        this.targetInput.val(this.formatterFn(this.sourceInput.val()));
-      }
+      this.execute();
     },
 
     _setElements: function() {
